@@ -1,11 +1,11 @@
 {
-    "name": "install-express-pitok",
+    "name": "install-express",
     "version": "1.0.3",
     "description": "CLI untuk generate project express typescript pitok",
     "main": "dist/index.js",
-    "type": "module",
+    "type": "commonjs",
     "bin": {
-        "install-express-pitok": "./bin/cli.cjs"
+        "install-express": "./bin/cli.cjs"
     },
     "scripts": {
         "build": "tsc"
@@ -19,17 +19,19 @@
     "author": "pitok",
     "license": "MIT",
     "dependencies": {
-        "boxen": "^8.0.1",
-        "chalk": "^5.0.0",
-        "execa": "^7.0.0",
+        "boxen": "^5.1.2",
+        "chalk": "^4.1.2",
+        "execa": "^5.1.1",
         "figlet": "^1.8.1",
         "fs-extra": "^11.3.0",
-        "gradient-string": "^3.0.0",
-        "inquirer": "^12.7.0"
+        "gradient-string": "^1.2.0",
+        "inquirer": "^8.2.0"
     },
     "devDependencies": {
         "@types/figlet": "^1.7.0",
         "@types/fs-extra": "^11.0.4",
+        "@types/gradient-string": "^1.1.6",
+        "@types/inquirer": "^9.0.8",
         "@types/node": "^24.0.10",
         "typescript": "^5.0.0"
     }

@@ -2,9 +2,9 @@
     // "$schema": "https://json.schemastore.org/tsconfig", // Uncomment if you want schema validation and have internet access
     "compilerOptions": {
         "outDir": "./dist",
-        "module": "NodeNext",
+        "module": "CommonJS",
         "target": "ES2020",
-        "moduleResolution": "NodeNext",
+        "moduleResolution": "Node",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
