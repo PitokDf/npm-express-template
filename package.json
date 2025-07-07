@@ -1,8 +1,9 @@
 {
     "name": "install-express-pitok",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "CLI untuk generate project express typescript pitok",
     "main": "dist/index.js",
+    "type": "module",
     "bin": {
         "install-express-pitok": "./bin/cli.js"
     },
