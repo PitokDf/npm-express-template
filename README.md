@@ -28,3 +28,28 @@ When `--exclude-docker` (or the interactive prompt answers `No`), the CLI remove
 - docker/ directory
 
 The CLI will also update package.json `name` field and install dependencies.
+
+Publish to npm (public)
+-----------------------
+
+1) Build and verify the package contents:
+
+```powershell
+npm run build
+npm pack --dry-run
+```
+
+2) Login to npm (if not already):
+
+```powershell
+npm login
+```
+
+3) Bump the version if needed (patch/minor/major), then publish:
+
+```powershell
+npm version patch  # or minor/major
+npm publish        # will use prepared build/distribution
+```
+
+If the package name is already taken on npm, consider changing `name` in `package.json` to something unique or use a scoped name like `@pitok/install-express`.
