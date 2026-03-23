@@ -1,6 +1,6 @@
 {
     "name": "install-express",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "CLI untuk generate project express typescript pitok",
     "main": "dist/index.js",
     "type": "commonjs",
