@@ -177,6 +177,27 @@ async function main() {
             pkg.name = finalProjectName;
 
             if (pkgManager === 'bun') {
+                // Downgrade Prisma to stable 5.22.0 specifically for Bun isolated processes to survive Edge collision.
+                if (pkg.dependencies['@prisma/client']) pkg.dependencies['@prisma/client'] = '^5.22.0';
+                if (pkg.dependencies['prisma']) pkg.dependencies['prisma'] = '^5.22.0';
+                if (pkg.dependencies['@prisma/adapter-pg']) pkg.dependencies['@prisma/adapter-pg'] = '^5.22.0';
+
+                // Rewrite schema for Prisma 5.22 which requires explicit URL strings unlike 7.4 Canary
+                const schemaPath = path.join(targetPath, 'prisma', 'schema.prisma');
+                if (fs.existsSync(schemaPath)) {
+                    let schemaContent = fs.readFileSync(schemaPath, 'utf-8');
+                    if (!schemaContent.includes('url      = env("DATABASE_URL")')) {
+                        schemaContent = schemaContent.replace(/provider\s*=\s*".+"/g, `$&\\n  url      = env("DATABASE_URL")`);
+                        fs.writeFileSync(schemaPath, schemaContent);
+                    }
+                }
+                
+                // Cleanup canary config
+                const prismaConfigPath = path.join(targetPath, 'prisma.config.ts');
+                if (fs.existsSync(prismaConfigPath)) {
+                    fsExtra.removeSync(prismaConfigPath);
+                }
+
                 if (pkg.scripts) {
                     for (const key in pkg.scripts) {
                         pkg.scripts[key] = pkg.scripts[key]
@@ -279,6 +300,15 @@ CMD ["bun", "dist/src/index.js"]
 
         // Jika bukan postgres, kita kembali ke native Rust engine
         if (dbEngine !== 'postgresql') {
+            const schemaPathCurrent = path.join(targetPath, 'prisma', 'schema.prisma');
+            if (fs.existsSync(schemaPathCurrent)) {
+                let schemaContentCurrent = fs.readFileSync(schemaPathCurrent, 'utf-8');
+                if (!schemaContentCurrent.includes('url      = env("DATABASE_URL")')) {
+                    schemaContentCurrent = schemaContentCurrent.replace(/provider\s*=\s*".+"/g, `$&\\n  url      = env("DATABASE_URL")`);
+                    fs.writeFileSync(schemaPathCurrent, schemaContentCurrent);
+                }
+            }
+
             const prismaTsPath = path.join(targetPath, 'src', 'config', 'prisma.ts');
             if (fs.existsSync(prismaTsPath)) {
                 const genericPrismaConfig = `import { PrismaClient } from "@prisma/client/index.js";\n\nconst prisma = new PrismaClient();\nexport default prisma;\n`;
